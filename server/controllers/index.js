@@ -4,9 +4,7 @@ module.exports = {
   messages: {
     get: function (req, res) { // a function which handles a get request for all messages for the client
       models.messages.get(function(messages) {
-        console.log("logging messages from controller: ", messages);
-        console.log('messages', Array.isArray(messages));
-        // return messages;
+
         res.end(JSON.stringify(messages));
       });
       // console.log('messages', messages);
