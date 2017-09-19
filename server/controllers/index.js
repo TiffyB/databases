@@ -3,14 +3,23 @@ var models = require('../models');
 module.exports = {
   messages: {
     get: function (req, res) { // a function which handles a get request for all messages for the client
-      console.log('got here');
-      var messages = models.messages.get();
-      res.end(JSON.stringify(messages)); //does this work? Or do I need to write the headers as well?
+      models.messages.get(function(messages) {
+        console.log("logging messages from controller: ", messages);
+        console.log('messages', Array.isArray(messages));
+        // return messages;
+        res.end(JSON.stringify(messages));
+      });
+      // console.log('messages', messages);
+      // res.end(JSON.stringify(messages)); //does this work? Or do I need to write the headers as well?
     }, 
     post: function (req, res) { // a function which handles posting a message to the database
+
+      
       res.statusCode = 201;
       var messageData = [];
       req.on('data', (chunk) => {
+        console.log('got to post messages in controllers');
+        console.log(chunk);
         messageData.push(chunk);
       });
       req.on('end', () => {
@@ -26,8 +35,28 @@ module.exports = {
 
   users: {
     // Ditto as above
-    get: function (req, res) {},
-    post: function (req, res) {}
+    get: function (req, res) {
+      console.log('got here');
+      var users = models.users.get();
+      console.log(users);
+      res.end(JSON.stringify(users)); //does this work? Or do I need to write the headers as well?
+    },
+    post: function (req, res) {
+      res.statusCode = 201;
+      var userData = [];
+      req.on('data', (chunk) => {
+        userData.push(chunk);
+      });
+      req.on('end', () => {
+        userData = [].concat(userData).toString('utf8');
+        var parsedUser = JSON.parse(userData);
+        //send to models?
+        models.users.post(parsedUser);
+        
+      });
+      res.end(); //does this work? Or do I need to write the headers as well?
+
+    }
   }
 };
 

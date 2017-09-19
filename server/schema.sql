@@ -20,13 +20,12 @@ USE chat;
 -- Table 'Messages'
 -- 
 -- ---
-
 DROP TABLE IF EXISTS `Messages`;
     
 CREATE TABLE `Messages` (
   `id` INTEGER AUTO_INCREMENT,
   `text` VARCHAR(150),
-  `user` INTEGER,
+  `user` VARCHAR(20),
   `roomname` VARCHAR(20),
   PRIMARY KEY (`id`)
   -- FOREIGN KEY (`user`) REFERENCES `Users` (`id`)
@@ -37,19 +36,49 @@ CREATE TABLE `Messages` (
 -- 
 -- ---
 
-DROP TABLE IF EXISTS `Users`;
+-- DROP TABLE IF EXISTS `Users`;
     
-CREATE TABLE `Users` (
-  `userid` INTEGER AUTO_INCREMENT,
-  `name` VARCHAR(30),
-  PRIMARY KEY (`userid`)
-);
+-- CREATE TABLE `Users` (
+--   `userid` INTEGER AUTO_INCREMENT,
+--   `name` VARCHAR(30),
+--   PRIMARY KEY (`userid`)
+-- );
 
 -- ---
 -- Foreign Keys 
 -- ---
 
-ALTER TABLE `Messages` ADD FOREIGN KEY (user) REFERENCES `Users` (`userid`);
+-- ALTER TABLE `Messages` ADD FOREIGN KEY (user) REFERENCES `Users` (`userid`);
+
+-- DROP TABLE IF EXISTS `Messages`;
+    
+-- CREATE TABLE `Messages` (
+--   `id` INTEGER AUTO_INCREMENT,
+--   `text` VARCHAR(150),
+--   `user` INTEGER,
+--   `roomname` VARCHAR(20),
+--   PRIMARY KEY (`id`)
+--   -- FOREIGN KEY (`user`) REFERENCES `Users` (`id`)
+-- );
+
+-- -- ---
+-- -- Table 'Users'
+-- -- 
+-- -- ---
+
+-- DROP TABLE IF EXISTS `Users`;
+    
+-- CREATE TABLE `Users` (
+--   `userid` INTEGER AUTO_INCREMENT,
+--   `name` VARCHAR(30),
+--   PRIMARY KEY (`userid`)
+-- );
+
+-- -- ---
+-- -- Foreign Keys 
+-- -- ---
+
+-- ALTER TABLE `Messages` ADD FOREIGN KEY (user) REFERENCES `Users` (`userid`);
 
 -- ---
 -- Table Properties
