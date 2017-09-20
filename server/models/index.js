@@ -6,7 +6,7 @@ module.exports = {
 
       console.log('got here too!');
       // var query = db.query('SELECT * FROM messages');
-      var queryStr = 'SELECT * FROM messages';
+      var queryStr = 'SELECT * FROM messages left outer join users on (messages.user = users.userid) order by messages.id desc';
       db.query(queryStr, function(err, results) {
         callback(results);
       });
@@ -23,16 +23,16 @@ module.exports = {
     }, 
     post: function (messageData) { // a function which can be used to insert a message into the database
       console.log('got to post in models');
-      var sql = "INSERT INTO messages (user, text, roomname) VALUE ?";
+      var sql = "INSERT INTO messages (user, text, roomname) VALUE ((SELECT userid FROM users WHERE name = ? limit 1), ?, ?)";
       //need to get userid number
-      var useridQuery = 'SELECT userid FROM users WHERE name = ' + messageData.user;
+      // var useridQuery = "SELECT userid FROM users WHERE name = " + messageData.user;
       // var userid = db.query(useridQuery);
       // userid.on('result', function(id) {
       //   console.log(id);
       // });
-      var values = [[messageData.user, messageData.text, messageData.roomname]];
-      db.query(sql, [values], function(err, result) {
-
+      var values = [messageData.user, messageData.text, messageData.roomname];
+      db.query(sql, values, function(err, result) {
+        console.log(err);
         console.log("Number of records inserted: " + result.affectedRows);
       });
     } 
@@ -40,7 +40,7 @@ module.exports = {
 
   users: {
     // Ditto as above.
-    get: function (response, request) {
+    get: function (callback) {
       console.log('got to users model');
       var query = db.query('SELECT * FROM users');
       var users = [];

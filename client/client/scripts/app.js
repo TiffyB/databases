@@ -77,7 +77,7 @@ var app = {
         app.messages = data.results;
 
         // Get the last message
-        var mostRecentMessage = data.results[data.results.length - 1];
+        var mostRecentMessage = data.results[0];
 
         // Only bother updating the DOM if we have a new message
         if (mostRecentMessage.id !== app.lastMessageId) {
@@ -161,10 +161,10 @@ var app = {
     // Add in the message data using DOM methods to avoid XSS
     // Store the username in the element's data attribute
     var $username = $('<span class="username"/>');
-    $username.text(message.user + ': ').attr('data-roomname', message.roomname).attr('data-username', message.user).appendTo($chat);
+    $username.text(message.name + ': ').attr('data-roomname', message.roomname).attr('data-username', message.name).appendTo($chat);
 
     // Add the friend class
-    if (app.friends[message.user] === true) {
+    if (app.friends[message.name] === true) {
       $username.addClass('friend');
     }
 

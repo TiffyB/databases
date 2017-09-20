@@ -4,11 +4,10 @@ module.exports = {
   messages: {
     get: function (req, res) { // a function which handles a get request for all messages for the client
       models.messages.get(function(messages) {
-
+        //need to get user name using query
         res.end(JSON.stringify(messages));
       });
-      // console.log('messages', messages);
-      // res.end(JSON.stringify(messages)); //does this work? Or do I need to write the headers as well?
+
     }, 
     post: function (req, res) { // a function which handles posting a message to the database
 
