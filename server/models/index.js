@@ -10,7 +10,7 @@ module.exports = {
       });
 
     }, 
-    post: function (messageData) { // a function which can be used to insert a message into the database
+    post: function (messageData, callback) { // a function which can be used to insert a message into the database
     
       var sql = "INSERT INTO messages (user, text, roomname) VALUE ((SELECT userid FROM users WHERE name = ? limit 1), ?, ?)";
 
@@ -18,6 +18,7 @@ module.exports = {
       db.query(sql, values, function(err, result) {
         console.log(err);
         console.log("Number of records inserted: " + result.affectedRows);
+        callback(err, result);
       });
     } 
   },
@@ -39,7 +40,7 @@ module.exports = {
       var values = [userData.name];
       db.query(sql, values, function(err, result) {
         console.log("Number of users inserted: " + result.affectedRows);
-        callback();
+        callback(err, result);
       });
     }
   }
