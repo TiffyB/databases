@@ -5,6 +5,7 @@ module.exports = {
     get: function (req, res) { // a function which handles a get request for all messages for the client
       models.messages.get(function(messages) {
         //need to get user name using query
+        console.log(messages);
         res.end(JSON.stringify(messages));
       });
 
@@ -34,9 +35,11 @@ module.exports = {
     // Ditto as above
     get: function (req, res) {
       console.log('got here');
-      var users = models.users.get();
-      console.log(users);
-      res.end(JSON.stringify(users)); //does this work? Or do I need to write the headers as well?
+      models.users.get(function(users) {
+        console.log("users ", users);
+        res.end(JSON.stringify(users));
+      });
+      
     },
     post: function (req, res) {
       res.statusCode = 201;
@@ -48,10 +51,12 @@ module.exports = {
         userData = [].concat(userData).toString('utf8');
         var parsedUser = JSON.parse(userData);
         //send to models?
-        models.users.post(parsedUser);
+        models.users.post(parsedUser, function() {
+          res.sendStatus(201);
+        });
         
       });
-      res.end(); //does this work? Or do I need to write the headers as well?
+      // res.end(); //does this work? Or do I need to write the headers as well?
 
     }
   }

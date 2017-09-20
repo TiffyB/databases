@@ -4,32 +4,16 @@ module.exports = {
   messages: {
     get: function (callback) { // a function which produces all the messages
 
-      console.log('got here too!');
-      // var query = db.query('SELECT * FROM messages');
       var queryStr = 'SELECT * FROM messages left outer join users on (messages.user = users.userid) order by messages.id desc';
       db.query(queryStr, function(err, results) {
         callback(results);
       });
-      // var messages = [];
-      // query.on('result', function(row) {
-      //   messages.push(row);
-      //   console.log("message:", row);
-      // });
 
-      // query.on('end', function() {
-      //   callback(messages);
-      // });
-      // how do i export these to controllers?
     }, 
     post: function (messageData) { // a function which can be used to insert a message into the database
-      console.log('got to post in models');
+    
       var sql = "INSERT INTO messages (user, text, roomname) VALUE ((SELECT userid FROM users WHERE name = ? limit 1), ?, ?)";
-      //need to get userid number
-      // var useridQuery = "SELECT userid FROM users WHERE name = " + messageData.user;
-      // var userid = db.query(useridQuery);
-      // userid.on('result', function(id) {
-      //   console.log(id);
-      // });
+
       var values = [messageData.user, messageData.text, messageData.roomname];
       db.query(sql, values, function(err, result) {
         console.log(err);
@@ -41,16 +25,22 @@ module.exports = {
   users: {
     // Ditto as above.
     get: function (callback) {
+      var queryStr = 'SELECT * FROM users';
+      
       console.log('got to users model');
-      var query = db.query('SELECT * FROM users');
-      var users = [];
-      query.on('result', function(row) {
-        users.push(row);
-        console.log("users:", row);
+      // var query = db.query(queryStr);
+      db.query(queryStr, function(err, results) {
+        callback(results);
       });
     },
-    post: function () {
+    post: function (userData, callback) {
+      var sql = "INSERT INTO users (name) VALUE (?)";
       
+      var values = [userData.name];
+      db.query(sql, values, function(err, result) {
+        console.log("Number of users inserted: " + result.affectedRows);
+        callback();
+      });
     }
   }
 };
